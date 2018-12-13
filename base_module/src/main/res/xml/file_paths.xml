@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--name虚设的文件名，path指定目录-->
+    <!--1、对应内部内存卡根目录：Context.getFileDir()-->
+    <files-path
+        name="hw_init"
+        path="." />
+
+    <root-path
+        name="root_path"
+        path="." />
+    <!--2、对应应用默认缓存根目录：Context.getCacheDir()-->
+    <cache-path
+        name="cache"
+        path="." />
+    <!--3、对应外部内存卡根目录：Environment.getExternalStorageDirectory()-->
+    <external-path
+        name="external_files"
+        path="." />
+
+</paths>
