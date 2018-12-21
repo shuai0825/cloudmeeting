@@ -1,16 +1,14 @@
 package com.pmcc.base_module.mvp;
 
 
+import com.pmcc.base_module.down.DownCallBack;
 import com.pmcc.base_module.net.BaseResponseBean;
-import com.pmcc.base_module.net.DownCallBack;
 import com.pmcc.base_module.net.RetrofitClient;
 
 import java.io.File;
 import java.util.Map;
 
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.RequestBody;
 
 /**
@@ -55,10 +53,9 @@ public class DataModel {
      * 下载
      *
      * @param url
-     * @param callBack
      */
-    public void downFileModel(String url, DownCallBack callBack) {
-        RetrofitClient.getInstance().downFile(url, callBack);
+    public void downFileModel(String url, DownCallBack downCallBack) {
+        RetrofitClient.getInstance().downFile(url, downCallBack);
     }
 
     /**

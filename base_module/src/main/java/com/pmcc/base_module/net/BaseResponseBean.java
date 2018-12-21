@@ -13,6 +13,24 @@ public class BaseResponseBean {
     private String resultCode;
     private String resultDesc;
     private Object resultData;
+    private String rows;
+    private String object;
+
+    public String getRows() {
+        return rows;
+    }
+
+    public void setRows(String rows) {
+        this.rows = rows;
+    }
+
+    public String getObject() {
+        return object;
+    }
+
+    public void setObject(String object) {
+        this.object = object;
+    }
 
     public String getResultCode() {
         return resultCode;

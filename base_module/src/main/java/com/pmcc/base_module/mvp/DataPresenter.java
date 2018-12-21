@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.OnLifecycleEvent;
-import android.util.Log;
+import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
+import com.pmcc.base_module.down.DownCallBack;
 import com.pmcc.base_module.net.BaseResponseBean;
-import com.pmcc.base_module.net.DownCallBack;
 import com.pmcc.base_module.utils.LogUtils;
 import com.pmcc.base_module.widgets.MyProgressDialog;
 
@@ -31,7 +32,7 @@ public class DataPresenter extends BasePresenter<DataView> {
 
     private DataModel dataModel;
     private HashMap<String, Disposable> urlCancles;
-    private  MyProgressDialog myProgressDialog;
+    private MyProgressDialog myProgressDialog;
 
     /**
      * 初始化，并绑定view
@@ -40,7 +41,9 @@ public class DataPresenter extends BasePresenter<DataView> {
      */
     public DataPresenter(DataView view) {
         super(view);
-        myProgressDialog = new MyProgressDialog((Activity) view);
+        if (view instanceof Activity) {
+            myProgressDialog = new MyProgressDialog((Activity) view);
+        }
         dataModel = new DataModel();
         urlCancles = new LinkedHashMap<>();
     }
@@ -77,12 +80,28 @@ public class DataPresenter extends BasePresenter<DataView> {
 
             @Override
             public void onNext(BaseResponseBean responseBean) {
-                LogUtils.d(responseBean);
+                LogUtils.d(JSON.toJSONString(responseBean));
+                if (mView != null) {
+                    myProgressDialog.dismiss();
+                    if ("1".equals(responseBean.getResultCode())) {
+                        if (TextUtils.isEmpty(responseBean.getObject())) {
+                            mView.showSuccess(url, responseBean.getRows());
+                        } else {
+                            mView.showSuccess(url, responseBean.getObject());
+                        }
+                    } else {
+                        mView.showError(url, "0", responseBean.getMsg());
+                    }
+                }
             }
 
             @Override
             public void onError(Throwable throwable) {
-
+                LogUtils.d(JSON.toJSONString(throwable));
+                if (mView != null) {
+                    myProgressDialog.dismiss();
+                    mView.showError(url, "0", throwable.getMessage());
+                }
             }
 
             @Override
@@ -112,12 +131,20 @@ public class DataPresenter extends BasePresenter<DataView> {
 
             @Override
             public void onNext(BaseResponseBean responseBean) {
-                LogUtils.d(responseBean);
+                LogUtils.d(JSON.toJSONString(responseBean));
+                if (mView != null) {
+                    myProgressDialog.dismiss();
+                    mView.showSuccess(url, JSON.toJSONString(responseBean));
+                }
             }
 
             @Override
             public void onError(Throwable throwable) {
-                LogUtils.d(throwable);
+                LogUtils.d(JSON.toJSONString(throwable));
+                if (mView != null) {
+                    myProgressDialog.dismiss();
+                    mView.showError(url, "0", throwable.getMessage());
+                }
             }
 
             @Override
@@ -131,28 +158,8 @@ public class DataPresenter extends BasePresenter<DataView> {
      *
      * @param url
      */
-    public void downFile(final String url) {
-        dataModel.downFileModel(url, new DownCallBack() {
-            @Override
-            public void onStart(Disposable disposable) {
-                urlCancles.put(url, disposable);
-            }
-
-            @Override
-            public void onProgress(long fileSize, long downSize) {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onSucess(String path, String name, long fileSize) {
-                cancleUrl(url);
-            }
-        });
+    public void downFile(final String url,DownCallBack downCallBack) {
+        dataModel.downFileModel(url, downCallBack);
     }
 
     public void postFileModel(final String url, Map<String, RequestBody> params, File[] files) {

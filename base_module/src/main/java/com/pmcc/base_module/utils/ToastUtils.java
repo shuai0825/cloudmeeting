@@ -20,7 +20,7 @@ public class ToastUtils {
             toast = Toast.makeText(BaseApp.getAppContext(), text, Toast.LENGTH_SHORT);
         }
         toast.setText(text);
-      //  toast.setGravity(Gravity.BOTTOM, 0, UIUtils.getDimention(R.dimen.dp_toast_bottom));
+        //  toast.setGravity(Gravity.BOTTOM, 0, UIUtils.getDimention(R.dimen.dp_toast_bottom));
         toast.show();
     }
 

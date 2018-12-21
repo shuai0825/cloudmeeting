@@ -8,7 +8,7 @@
     <application>
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.pmcc.pd"
+            android:authorities="com.pmcc.cloudmeeting.pd"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -16,11 +16,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity
-            android:name=".photo.PhotoSelectActivity"
-            android:label="选择图片方式"
-            android:screenOrientation="portrait"
-            android:theme="@style/my_select_photo"></activity>
+
     </application>
 
 

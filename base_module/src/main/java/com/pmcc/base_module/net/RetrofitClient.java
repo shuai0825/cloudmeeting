@@ -1,15 +1,13 @@
 package com.pmcc.base_module.net;
 
-import android.content.Context;
-import android.text.TextUtils;
-
-import org.reactivestreams.Subscriber;
+import com.pmcc.base_module.commen.UrlConstant;
+import com.pmcc.base_module.down.DownCallBack;
+import com.pmcc.base_module.down.DownSubscriber;
 
 import java.io.File;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -31,9 +29,10 @@ public class RetrofitClient {
     private BaseApiService apiService;
     private static Retrofit retrofit;
 
-    public static String baseUrl = BaseApiService.Base_URL;
+
 
     private static RetrofitClient sNewInstance;
+
 
     private RetrofitClient() {
 
@@ -71,7 +70,7 @@ public class RetrofitClient {
                 .client(okHttpClient)
                 .addConverterFactory(FastJsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(baseUrl)
+                .baseUrl(UrlConstant.baseurl)
                 .build();
 
     }
@@ -122,12 +121,13 @@ public class RetrofitClient {
      * 下载
      * @param url
      */
-    public void downFile(String url,DownCallBack callBack) {
-        getRetrofit(false,false).create(BaseApiService.class)
-                .downFile(url)
+    public void downFile(String url, DownCallBack downCallBack) {
+        getRetrofit(false,false).create(BaseApiService.class).downFile(url)
                 .subscribeOn(Schedulers.io())//发射事件,io线程网络请求,多次指定时,第一次有效
-                .observeOn(AndroidSchedulers.mainThread())//接收事件，ui线程处理
-                .subscribe(new DownSubscriber<ResponseBody>(callBack));
+                .observeOn(Schedulers.io())
+                .subscribe(new DownSubscriber<ResponseBody>(downCallBack));
+
+
     }
 
     /**

@@ -23,7 +23,6 @@ import retrofit2.http.Url;
  * 通用请求方法
  */
 public interface BaseApiService {
-    String Base_URL ="http://wx.pmcc.com.cn" ;
 
     /**
      * 普通的get请求

@@ -1,9 +1,6 @@
-package com.pmcc.base_module.net;
+package com.pmcc.base_module.down;
 
 
-
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -22,9 +19,6 @@ public  class DownSubscriber<ResponseBody> implements Observer<ResponseBody> {
 
     @Override
     public void onSubscribe(Disposable d) {
-        if (callBack != null) {
-            callBack.onStart(d);
-        }
     }
 
     @Override
@@ -41,8 +35,6 @@ public  class DownSubscriber<ResponseBody> implements Observer<ResponseBody> {
 
     @Override
     public void onComplete() {
-        if (callBack != null) {
-            callBack.onCompleted();
-        }
+
     }
 }

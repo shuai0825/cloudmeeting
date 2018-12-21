@@ -53,11 +53,11 @@ public class LogUtils {
         Log.i(className, "%s"+createLog(message));
     }
 
-    public static void d(Object message) {
+    public static void d(String message) {
         if (!isDebuggable())
             return;
         getMethodNames(new Throwable().getStackTrace());
-        Log.d(className, "%z"+createLog(JSON.toJSONString(message)));
+        Log.d(className, "%z"+message);
     }
 
     public static void v(String message) {
