@@ -39,6 +39,7 @@ public class MainActivity extends BaseActivity<DataPresenter> implements DataVie
     private RxPermissions rxPermissions;
     private int requestCode;
     private String downUrl;
+    private HashMap<String, Object> parap;
 
     @Override
     protected DataPresenter createPresenter() {
@@ -67,9 +68,10 @@ public class MainActivity extends BaseActivity<DataPresenter> implements DataVie
         switch (view.getId()) {
             case R.id.main_login_bt:
                 HashMap<String, Object> parap = new HashMap<>();
-                parap.put("phone", "admin");
-                parap.put("pwd", "123");
-                mPresenter.postDatas(UrlConstant.login, parap, "登录中");
+                parap.put("name", "13295040076");
+                parap.put("pwd", "123456");
+               // mPresenter.postDatas(UrlConstant.login, parap, "登录中");
+                mPresenter.getDatas("http://192.168.219.44:8080/billdiary/user/login", parap, "登录中");
                 break;
             case R.id.main_down_bt:
                 String downUrl = "http://wx.pmcc.com.cn:8893/uploadFile/appVersion/2018-12-10/c4bbd7d7f83d40ca82a0dd6515b727de.apk";
@@ -99,6 +101,10 @@ public class MainActivity extends BaseActivity<DataPresenter> implements DataVie
                 mPresenter.getDatas(UrlConstant.getNewVersion, new HashMap<String, Object>(), "加载中");
                 break;
             case R.id.main_dialog_bt:
+                HashMap<String, Object> parap1 = new HashMap<>();
+                parap1.put("userId", "1540195039680598670");
+                // mPresenter.postDatas(UrlConstant.login, parap, "登录中");
+                mPresenter.getDatas("http://192.168.219.44:8080/billdiary/diary/findAll", parap1, "登录中");
                 break;
         }
     }

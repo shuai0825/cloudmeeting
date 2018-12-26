@@ -97,7 +97,7 @@ public class DataPresenter extends BasePresenter<DataView> {
 
             @Override
             public void onError(Throwable throwable) {
-                LogUtils.d(JSON.toJSONString(throwable));
+                LogUtils.d(throwable.getMessage());
                 if (mView != null) {
                     myProgressDialog.dismiss();
                     mView.showError(url, "0", throwable.getMessage());
@@ -140,7 +140,7 @@ public class DataPresenter extends BasePresenter<DataView> {
 
             @Override
             public void onError(Throwable throwable) {
-                LogUtils.d(JSON.toJSONString(throwable));
+                LogUtils.d(throwable.getMessage());
                 if (mView != null) {
                     myProgressDialog.dismiss();
                     mView.showError(url, "0", throwable.getMessage());

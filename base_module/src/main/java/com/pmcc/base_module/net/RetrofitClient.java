@@ -30,7 +30,6 @@ public class RetrofitClient {
     private static Retrofit retrofit;
 
 
-
     private static RetrofitClient sNewInstance;
 
 
@@ -47,14 +46,15 @@ public class RetrofitClient {
 
     /**
      * 是否设置cook、缓存
+     *
      * @param setCook
      * @param setCatch
      * @return
      */
     private Retrofit getRetrofit(boolean setCook, boolean setCatch) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        if (setCook) {
-            builder.cookieJar(new NovateCookieManger());
+        if (setCook) {//对其他请求没影响，该cook可以打开
+            builder.cookieJar(new MyCookieManger());
         }
         if (setCatch) {
             builder.cache(RetrofitConfig.fileCache)
@@ -65,6 +65,7 @@ public class RetrofitClient {
                 .addInterceptor(RetrofitConfig.addLoggingInterceptor())
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .build();
+
 
         return new Retrofit.Builder()
                 .client(okHttpClient)
@@ -77,12 +78,13 @@ public class RetrofitClient {
 
     /**
      * 普通get
+     *
      * @param url
      * @param parap
      * @param observer
      */
     public void get(String url, Map<String, Object> parap, Observer<BaseResponseBean> observer) {
-       getRetrofit(false, false).create(BaseApiService.class)
+        getRetrofit(false, false).create(BaseApiService.class)
                 .getData(url, parap)
                 .subscribeOn(Schedulers.io())//发射事件,io线程网络请求,多次指定时,第一次有效
                 .observeOn(AndroidSchedulers.mainThread())//接收事件，ui线程处理
@@ -91,12 +93,13 @@ public class RetrofitClient {
 
     /**
      * 带有缓存的get
+     *
      * @param url
      * @param parap
      * @param observer
      */
     public void getCatch(String url, Map<String, Object> parap, Observer<BaseResponseBean> observer) {
-        getRetrofit(false,true).create(BaseApiService.class)
+        getRetrofit(false, true).create(BaseApiService.class)
                 .getData(url, parap)
                 .subscribeOn(Schedulers.io())//发射事件,io线程网络请求,多次指定时,第一次有效
                 .observeOn(AndroidSchedulers.mainThread())//接收事件，ui线程处理
@@ -105,12 +108,13 @@ public class RetrofitClient {
 
     /**
      * post请求
+     *
      * @param url
      * @param parap
      * @param observer
      */
     public void post(String url, Map<String, Object> parap, Observer<BaseResponseBean> observer) {
-        getRetrofit(false,false).create(BaseApiService.class)
+        getRetrofit(false, false).create(BaseApiService.class)
                 .postData(url, parap)
                 .subscribeOn(Schedulers.io())//发射事件,io线程网络请求,多次指定时,第一次有效
                 .observeOn(AndroidSchedulers.mainThread())//接收事件，ui线程处理
@@ -119,10 +123,11 @@ public class RetrofitClient {
 
     /**
      * 下载
+     *
      * @param url
      */
     public void downFile(String url, DownCallBack downCallBack) {
-        getRetrofit(false,false).create(BaseApiService.class).downFile(url)
+        getRetrofit(false, false).create(BaseApiService.class).downFile(url)
                 .subscribeOn(Schedulers.io())//发射事件,io线程网络请求,多次指定时,第一次有效
                 .observeOn(Schedulers.io())
                 .subscribe(new DownSubscriber<ResponseBody>(downCallBack));
@@ -132,6 +137,7 @@ public class RetrofitClient {
 
     /**
      * \上传文件
+     *
      * @param url
      */
     public void postFile(String url, Map<String, RequestBody> params, File[] files, Observer<BaseResponseBean> observer) {
@@ -139,8 +145,8 @@ public class RetrofitClient {
             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), files[i]);
             params.put("file\"; filename=\"" + files[i].getName() + "", requestBody);
         }
-        getRetrofit(false,false).create(BaseApiService.class)
-                .postFile(url,params)
+        getRetrofit(false, false).create(BaseApiService.class)
+                .postFile(url, params)
                 .subscribeOn(Schedulers.io())//发射事件,io线程网络请求,多次指定时,第一次有效
                 .observeOn(AndroidSchedulers.mainThread())//接收事件，ui线程处理
                 .subscribe(observer);

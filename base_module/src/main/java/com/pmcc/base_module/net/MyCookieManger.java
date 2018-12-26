@@ -14,33 +14,28 @@ import okhttp3.HttpUrl;
  * Created by ${zhangshuai} on 2018/12/11.
  * 2751157603@qq.com
  */
-public class NovateCookieManger implements CookieJar {
-    private static final String TAG = "NovateCookieManger";
-    private static Context mContext;
+public class MyCookieManger implements CookieJar {
     private static PersistentCookieStore cookieStore;
 
     /**
      * Mandatory constructor for the NovateCookieManger
      */
-    public NovateCookieManger() {
-        mContext = BaseApp.getAppContext();
+    public MyCookieManger() {
         if (cookieStore == null) {
-            cookieStore = new PersistentCookieStore(mContext);
+            cookieStore = new PersistentCookieStore();
         }
     }
 
     @Override
     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
         if (cookies != null && cookies.size() > 0) {
-            for (Cookie item : cookies) {
-                cookieStore.add(url, item);
-            }
+            cookieStore.addCookies(url, cookies);
         }
     }
 
     @Override
     public List<Cookie> loadForRequest(HttpUrl url) {
-        List<Cookie> cookies = cookieStore.get(url);
+        List<Cookie> cookies = cookieStore.getCookies();
         return cookies;
     }
 

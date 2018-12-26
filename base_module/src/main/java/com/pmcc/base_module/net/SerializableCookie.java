@@ -12,33 +12,33 @@ import okhttp3.Cookie;
  * Created byTamic on 2016-06-09.
  * {@link # https://github.com/NeglectedByBoss/RetrofitClient}
  */
-public class SerializableOkHttpCookies implements Serializable {
+public class SerializableCookie implements Serializable {
 
-    private transient final Cookie cookies;
+    private transient final Cookie cookie;
     private transient Cookie clientCookies;
 
-    public SerializableOkHttpCookies(Cookie cookies) {
-        this.cookies = cookies;
+    public SerializableCookie(Cookie cookie) {
+        this.cookie = cookie;
     }
 
-    public Cookie getCookies() {
-        Cookie bestCookies = cookies;
+    public Cookie getCookie() {
+        Cookie bestCookie = cookie;
         if (clientCookies != null) {
-            bestCookies = clientCookies;
+            bestCookie = clientCookies;
         }
-        return bestCookies;
+        return bestCookie;
     }
 
     private void writeObject(ObjectOutputStream out) throws IOException {
-        out.writeObject(cookies.name());
-        out.writeObject(cookies.value());
-        out.writeLong(cookies.expiresAt());
-        out.writeObject(cookies.domain());
-        out.writeObject(cookies.path());
-        out.writeBoolean(cookies.secure());
-        out.writeBoolean(cookies.httpOnly());
-        out.writeBoolean(cookies.hostOnly());
-        out.writeBoolean(cookies.persistent());
+        out.writeObject(cookie.name());
+        out.writeObject(cookie.value());
+        out.writeLong(cookie.expiresAt());
+        out.writeObject(cookie.domain());
+        out.writeObject(cookie.path());
+        out.writeBoolean(cookie.secure());
+        out.writeBoolean(cookie.httpOnly());
+        out.writeBoolean(cookie.hostOnly());
+        out.writeBoolean(cookie.persistent());
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
